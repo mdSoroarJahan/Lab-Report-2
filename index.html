@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Report 2</title>
+    <!-- Bootstrap CSS for offcanvas -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(51, 51, 51, 0.9);
+            color: white;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .alert-bar {
+            background: #666;
+            padding: 8px 0;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .alert-bar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .main-header {
+            padding: 15px 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .harvard-shield {
+            width: 40px;
+            height: 45px;
+            background: #A41E35;
+            margin-right: 15px;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-btn, .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-btn:hover, .menu-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Offcanvas Customization */
+        .offcanvas-menu-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .offcanvas-menu-item:hover {
+            background-color: #f8f9fa;
+            color: #A41E35;
+        }
+        
+        .offcanvas-menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-icon {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .offcanvas-header {
+            background-color: #333;
+            color: white;
+        }
+
+        .offcanvas-title {
+            color: white;
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        /* Portfolio Submenu */
+        .portfolio-submenu {
+            display: none;
+            background-color: #f8f9fa;
+            border-left: 3px solid #A41E35;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .portfolio-submenu.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .portfolio-sub-item {
+            padding: 0.75rem 1.5rem;
+            color: #666;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.9rem;
+        }
+
+        .portfolio-sub-item:last-child {
+            border-bottom: none;
+        }
+
+        .portfolio-sub-item:hover {
+            background-color: #e9ecef;
+            color: #A41E35;
+            transform: translateX(5px);
+        }
+
+        .portfolio-arrow {
+            float: right;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .portfolio-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect width="1200" height="600" fill="%23654321"/><g opacity="0.3"><rect x="100" y="200" width="80" height="60" fill="%238B4513"/><rect x="200" y="180" width="100" height="80" fill="%238B4513"/><rect x="320" y="190" width="90" height="70" fill="%238B4513"/><rect x="450" y="170" width="110" height="90" fill="%238B4513"/><rect x="580" y="185" width="85" height="75" fill="%238B4513"/><rect x="700" y="175" width="95" height="85" fill="%238B4513"/><rect x="820" y="195" width="75" height="65" fill="%238B4513"/><rect x="920" y="180" width="88" height="80" fill="%238B4513"/></g><g opacity="0.2"><circle cx="150" cy="150" r="15" fill="%23228B22"/><circle cx="280" cy="140" r="20" fill="%23228B22"/><circle cx="420" cy="160" r="18" fill="%23228B22"/><circle cx="550" cy="145" r="22" fill="%23228B22"/><circle cx="680" cy="155" r="16" fill="%23228B22"/><circle cx="800" cy="165" r="19" fill="%23228B22"/><circle cx="950" cy="150" r="17" fill="%23228B22"/></g></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .leadership-section {
+            background: rgba(0,0,0,0.6);
+            padding: 30px 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .leadership-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leadership-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .leadership-description {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Harvard Impact Section */
+        .impact-section {
+            background: #f8f8f8;
+            padding: 80px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .impact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 60px;
+        }
+
+        .impact-title h2 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .impact-description {
+            max-width: 400px;
+        }
+
+        .impact-description p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .learn-more-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .learn-more-btn::before {
+            content: '→';
+            background: #666;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: #A41E35;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Content Sections */
+        .content-sections {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .section-block {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            color: #666;
+            font-size: 1rem;
+            max-width: 600px;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .article-card {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .article-image {
+            width: 200px;
+            height: 120px;
+            background: #ddd;
+            border-radius: 8px;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .article-content h4 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .article-content p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .author-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: #000;
+            color: white;
+            padding: 60px 0;
+            margin: 60px 0;
+        }
+
+        .video-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .video-text {
+            flex: 1;
+        }
+
+        .video-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .video-play-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .play-icon {
+            width: 40px;
+            height: 40px;
+            background: #A41E35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 60px 0;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #A41E35, #654321);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .grid-item h4 {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .grid-item .play-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Sidebar */
+        .sidebar-section {
+            margin-top: 60px;
+        }
+
+        .sidebar-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+        }
+
+        .related-topics {
+            background: #f8f8f8;
+            padding: 40px;
+            border-radius: 12px;
+        }
+
+        .related-topics h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .topic-list {
+            list-style: none;
+        }
+
+        .topic-list li {
+            margin-bottom: 15px;
+        }
+
+        .topic-list a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .topic-list a:hover {
+            color: #A41E35;
+        }
+
+        /* About Me and Portfolio Sections */
+        .about-section, .portfolio-section {
+            padding: 80px 0;
+            background: #f8f8f8;
+            margin: 60px 0;
+        }
+
+        .about-section {
+            background: white;
+        }
+
+        .about-content, .portfolio-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content h2, .portfolio-content h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .about-content p, .portfolio-content p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .portfolio-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .portfolio-item-image {
+            height: 200px;
+            background: linear-gradient(45deg, #A41E35, #654321);
+        }
+
+        .portfolio-item-content {
+            padding: 20px;
+        }
+
+        .portfolio-item h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-item p {
+            color: #666;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .harvard-footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #ccc;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-card {
+                flex-direction: column;
+            }
+
+            .article-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .sidebar-content {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-item.large {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="alert-bar">
+            <div class="container">
+                <a href="https://daffodilvarsity.edu.bd/" target="_blank" style="color: white; text-decoration: none;">Learn about our lawsuits to protect our students and researchers</a>
+            </div>
+        </div>
+        <div class="main-header">
+            <div class="header-container">
+                <a href="#" target="_blank" class="logo">
+                    <div class="harvard-shield">H</div>
+                    <div class="logo-text">HARVARD<br>UNIVERSITY</div>
+                </a>
+                <div class="header-actions">
+                    <button class="search-btn" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')">🔍 Search</button>
+                    <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                        ☰ Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                <a href="./Aboutme/me.html" class="offcanvas-menu-item" target="_blank">
+                    <span class="menu-icon">👤</span>About Me
+                </a>
+                
+                <!-- Portfolio with submenu -->
+                <div class="offcanvas-menu-item" onclick="togglePortfolioSubmenu()">
+                    <span class="menu-icon">💼</span>Portfolio
+                    <span class="portfolio-arrow">▼</span>
+                </div>
+                
+                <!-- Portfolio Submenu -->
+                <div class="portfolio-submenu" id="portfolioSubmenu">
+                    <a href="https://github.com/mdSoroarJahan/Calculator" class="portfolio-sub-item" target="_blank">
+                        <span class="menu-icon">🔢</span>Calculator
+                    </a>
+                    <a href="https://github.com/mdSoroarJahan/Lab-report-of-WE" class="portfolio-sub-item" target="_blank">
+                        <span class="menu-icon">💍</span>Marriage Biodata
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Ideas to<br>Enterprise</h1>
+            <p>Across Harvard's campus, our students, scholars, and faculty turn ideas into ventures that solve problems and create value.</p>
+        </div>
+        <div class="leadership-section">
+            <div class="leadership-content">
+                <div class="leadership-text">
+                    <h3>Foundational principles of leadership</h3>
+                    <div class="leadership-description">
+                        In this free online course you can explore strategies for leading in a changing world, new ways to approach complex organizational systems, and how to take thoughtful action.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact-section">
+        <div class="container">
+            <div class="impact-header">
+                <div class="impact-title">
+                    <h2>Harvard's impact</h2>
+                </div>
+                <div class="impact-description">
+                    <p>A 2015 study explored the impact that Harvard has in the business world.</p>
+                    <a href="https://daffodilvarsity.edu.bd/" target="_blank" class="learn-more-btn">Learn more about the study</a>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>146,000 ventures</h3>
+                    <p>founded by Harvard alumni</p>
+                </div>
+                <div class="stat-item">
+                    <h3>20 million people</h3>
+                    <p>employed by these ventures</p>
+                </div>
+                <div class="stat-item">
+                    <h3>$3.9 trillion</h3>
+                    <p>in combined annual revenue</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-sections">
+        <div class="container">
+            <div class="section-block">
+                <div class="section-header">
+                    <h2 class="section-title">Turning ideas into enterprise</h2>
+                    <p class="section-subtitle">The Harvard Innovation Labs brings together students from across the University to support them in developing their ideas and launching ventures.</p>
+                </div>
+                
+                <div class="video-section">
+                    <div class="container">
+                        <div class="video-content">
+                            <div class="video-text">
+                                <h3>How does innovation move from lab to real life?</h3>
+                                <a href="https://daffodilvarsity.edu.bd/" target="_blank" class="video-play-btn">
+                                    <div class="play-icon">▶️</div>
+                                    Learn more about Real Syn
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="articles-grid">
+                    <div class="article-card" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')" style="cursor: pointer;">
+                        <div class="article-image" style="background: linear-gradient(45deg, #333, #666);"></div>
+                        <div class="article-content">
+                            <h4>Founders with bright futures</h4>
+                            <p>Helping students prove their ideas work, STARTUP bootcamp runs yearlong deep-dive programs and connecting founders with Harvard faculty experts and successful alumni entrepreneurs.</p>
+                            <div class="article-author">
+                                <div class="author-avatar"></div>
+                                <span>Learn more about the Innovation Labs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-header">
+                    <h2 class="section-title">The business of better health</h2>
+                    <p class="section-subtitle">From Wyss Institute and Harvard Business School, technology and insights have both created companies and changed the world.</p>
+                </div>
+
+                <div class="articles-grid">
+                    <div class="article-card" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')" style="cursor: pointer;">
+                        <div class="article-image" style="background: linear-gradient(45deg, #4169E1, #87CEEB);"></div>
+                        <div class="article-content">
+                            <h4>Creating a new class of antibiotics</h4>
+                            <p>Research at Harvard's Wyss Institute has led to the development of new antibiotics, a company to commercialize them, and the hope to combat growing antimicrobial resistance.</p>
+                            <div class="article-author">
+                                <div class="author-avatar"></div>
+                                <span>Learn more about working toward health equity</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-grid">
+                <div class="grid-item large" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')" style="cursor: pointer;">
+                    <h4>Cultivating prosperity for farmers</h4>
+                    <div class="play-btn">▶️</div>
+                </div>
+                <div class="grid-item" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')" style="cursor: pointer;">
+                    <h4>Empowering farmers and eradicating hunger</h4>
+                    <div class="play-btn">▶️</div>
+                </div>
+                <div class="grid-item" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')" style="cursor: pointer;">
+                    <h4>Helping organizations do good in Jamaica</h4>
+                    <div class="play-btn">▶️</div>
+                </div>
+                <div class="grid-item" onclick="window.open('https://daffodilvarsity.edu.bd/', '_blank')" style="cursor: pointer;">
+                    <h4>Perfecting a new language</h4>
+                    <div class="play-btn">▶️</div>
+                </div>
+            </div>
+            <div class="section-block">
+                <div class="section-header">
+                    <h2 class="section-title">Fostering the future</h2>
+                    <p class="section-subtitle">Our collaborators work to support the ambitious kids and bright young minds who will become tomorrow's leaders.</p>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <div class="section-header">
+                    <h2 class="section-title">Education Entrepreneurs</h2>
+                    <p class="section-subtitle">The Harvard Graduate School of Education accelerates deeper impact at increasing scale to transform of work of educators.</p>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-content">
+                    <div class="main-content">
+                        <!-- Main content area -->
+                    </div>
+                    <div class="related-topics">
+                        <p style="font-size: 0.8rem; color: #666; margin-bottom: 20px;">EXPLORE BY TOPIC</p>
+                        <h3>Related In Focus topics</h3>
+                        <ul class="topic-list">
+                            <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Innovation from Harvard</a></li>
+                            <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Research from 2024</a></li>
+                            <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Gadgets</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Teaching & Academics</h4>
+                    <ul>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Undergraduate Programs</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Graduate Programs</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Professional Learning</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Trademark Notice</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Harvard Library</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Alumni</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Faculty</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Privacy Statement</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Get In Touch</h4>
+                    <ul>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Harvard Directory</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Maps & Directions</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Jobs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>About Harvard</h4>
+                    <ul>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Leadership</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">History</a></li>
+                        <li><a href="https://daffodilvarsity.edu.bd/" target="_blank">Work Here</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="harvard-footer-logo">
+                    <div class="harvard-shield">H</div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 500;">HARVARD</div>
+                        <div style="font-size: 10px; color: #ccc;">Copyright © 2025 The President and Fellows of Harvard College</div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="https://daffodilvarsity.edu.bd/" target="_blank">📷</a>
+                    <a href="https://daffodilvarsity.edu.bd/" target="_blank">🎵</a>
+                    <a href="https://daffodilvarsity.edu.bd/" target="_blank">💼</a>
+                    <a href="https://daffodilvarsity.edu.bd/" target="_blank">📘</a>
+                    <a href="https://daffodilvarsity.edu.bd/" target="_blank">📺</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle Portfolio Submenu
+        function togglePortfolioSubmenu() {
+            const submenu = document.getElementById('portfolioSubmenu');
+            const arrow = document.querySelector('.portfolio-arrow');
+            
+            if (submenu.classList.contains('show')) {
+                submenu.classList.remove('show');
+                arrow.classList.remove('rotated');
+            } else {
+                submenu.classList.add('show');
+                arrow.classList.add('rotated');
+            }
+        }
+
+        // Smooth scrolling function for menu items
+        function scrollToSection(sectionId) {
+            setTimeout(() => {
+                document.getElementById(sectionId).scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300); // Small delay to allow offcanvas to close first
+        }
+
+        // Smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Updated search functionality to redirect to Daffodil University
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            window.open('https://daffodilvarsity.edu.bd/', '_blank');
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply animation to elements
+        document.querySelectorAll('.article-card, .stat-item, .grid-item, .portfolio-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Interactive elements with Daffodil University links
+        document.querySelectorAll('.article-card, .portfolio-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Grid item interactions
+        document.querySelectorAll('.grid-item').forEach(item => {
+            item.addEventListener('click', function() {
+                window.open('https://daffodilvarsity.edu.bd/', '_blank');
+            });
+        });
+
+        // Video play button
+        document.querySelectorAll('.video-play-btn, .play-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.open('https://daffodilvarsity.edu.bd/', '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
